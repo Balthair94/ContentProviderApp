@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MyAppProvider</string>
+    <string name="label_friend_name">Friend Name</string>
+    <string name="label_phone_number">00-000-00-00</string>
 </resources>
