@@ -11,7 +11,7 @@ import android.widget.TextView
 /**
  * Created by Baltazar Rodriguez on 30/01/2018.
  */
-class FriendsCursorAdapter(context: Context, cursor: Cursor, flags: Int):
+class FriendsCursorAdapter(context: Context, cursor: Cursor?, flags: Int):
         CursorAdapter(context, cursor, flags) {
 
     override fun newView(p0: Context?, p1: Cursor?, p2: ViewGroup?): View =
