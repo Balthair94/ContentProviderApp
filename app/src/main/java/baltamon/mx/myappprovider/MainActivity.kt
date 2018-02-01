@@ -14,7 +14,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
 
-class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
+class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>, FriendInterface{
 
     val AUTHORITY = "baltamon.mx.myappprovider" // You can find this in the Manifest
     val BASE_PATH = "friends" // Table name
@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
 
         cursorAdapter = FriendsCursorAdapter(this, null, 0)
         lv_friends_list.adapter = cursorAdapter
+        restartLoader()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -38,15 +39,16 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
-            R.id.add_friend -> showToast("Add")
+            R.id.add_friend -> showAddFriendDialog()
             R.id.delete_friend -> showToast("Delete")
             R.id.update_friend -> showToast("Update")
         }
         return super.onOptionsItemSelected(item)
     }
 
-    fun addFriend(){
-        val values = ContentValues()
+    fun showAddFriendDialog(){
+        val dialog = AddFriendFragment()
+        dialog.show(supportFragmentManager, "fragment_add")
     }
 
     fun setupToolbar(){
@@ -71,6 +73,16 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
 
     fun showToast(message: String){
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onFriendAdded(friend: Friend) {
+        val helper = DBOpenHelper(this)
+        val values = ContentValues()
+        values.put(helper.FRIEND_NAME, friend.name)
+        values.put(helper.FRIEND_PHONE, friend.phone)
+        contentResolver.insert(CONTENT_URI, values)
+        restartLoader()
+        showToast(friend.name + " added")
     }
 
 }
