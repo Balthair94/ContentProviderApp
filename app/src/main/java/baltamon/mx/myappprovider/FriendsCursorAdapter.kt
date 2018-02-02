@@ -26,6 +26,5 @@ class FriendsCursorAdapter(context: Context, cursor: Cursor?, flags: Int):
 
         nameTextView?.text = friendName
         phoneTextView?.text = friendPhone
-
     }
 }
