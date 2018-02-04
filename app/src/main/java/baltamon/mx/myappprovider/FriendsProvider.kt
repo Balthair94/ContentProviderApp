@@ -14,10 +14,6 @@ import android.net.Uri
  */
 class FriendsProvider : ContentProvider() {
 
-    val AUTHORITY = "baltamon.mx.myappprovider" // You can find this in the Manifest
-    val BASE_PATH = "friends" // Table name
-    val CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH)
-
     val FRIENDS = 1
     val FRIEND_ID = 2
 
@@ -29,7 +25,7 @@ class FriendsProvider : ContentProvider() {
     }
 
     var database: SQLiteDatabase? = null
-    var helper:DBOpenHelper? = null
+    var helper: DBOpenHelper? = null
 
     override fun onCreate(): Boolean {
         helper = DBOpenHelper(context)
@@ -40,16 +36,16 @@ class FriendsProvider : ContentProvider() {
     override fun query(p0: Uri?, p1: Array<out String>?, p2: String?, p3: Array<out String>?, p4: String?): Cursor {
         val cursor: Cursor
         when(uriMatcher.match(p0)){
-            FRIENDS -> cursor = database?.query(helper?.TABLE_FRIENDS,
-                    helper?.ALL_COLUMNS, p2, null, null, null,
-                    helper?.FRIEND_NAME + " ASC") ?: throw IllegalArgumentException("This is an Unknown URI " + p0)
+            FRIENDS -> cursor = database?.query(TABLE_FRIENDS,
+                    ALL_COLUMNS, p2, null, null, null,
+                    FRIEND_NAME + " ASC") ?: throw IllegalArgumentException("This is an Unknown URI " + p0)
             else -> throw IllegalArgumentException("This is an Unknown URI " + p0)
         }
         return cursor
     }
 
     override fun insert(p0: Uri?, p1: ContentValues?): Uri {
-        val id = database?.insert(helper?.TABLE_FRIENDS, null, p1) ?: 0
+        val id = database?.insert(TABLE_FRIENDS, null, p1) ?: 0
         if (id > 0){
             val _uri = ContentUris.withAppendedId(CONTENT_URI, id)
             context.contentResolver.notifyChange(_uri, null)
@@ -61,7 +57,7 @@ class FriendsProvider : ContentProvider() {
     override fun update(p0: Uri?, p1: ContentValues?, p2: String?, p3: Array<out String>?): Int {
         val updCount: Int
         when(uriMatcher.match(p0)){
-            FRIENDS -> updCount = database?.update(helper?.TABLE_FRIENDS, p1, p2, p3) ?: 0
+            FRIENDS -> updCount = database?.update(TABLE_FRIENDS, p1, p2, p3) ?: 0
             else -> throw IllegalArgumentException("This is an Unknown URI " + p0)
         }
         return updCount
@@ -70,7 +66,7 @@ class FriendsProvider : ContentProvider() {
     override fun delete(p0: Uri?, p1: String?, p2: Array<out String>?): Int {
         val delCount: Int
         when(uriMatcher.match(p0)){
-            FRIENDS -> delCount = database?.delete(helper?.TABLE_FRIENDS, p1, p2) ?: 0
+            FRIENDS -> delCount = database?.delete(TABLE_FRIENDS, p1, p2) ?: 0
             else -> throw IllegalArgumentException("This is an Unknown URI " + p0)
         }
         context.contentResolver.notifyChange(p0, null)

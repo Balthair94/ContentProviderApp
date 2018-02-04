@@ -5,7 +5,6 @@ import android.content.ContentValues
 import android.content.CursorLoader
 import android.database.Cursor
 import android.graphics.Color
-import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -15,10 +14,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
 
 class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>, FriendInterface{
-
-    val AUTHORITY = "baltamon.mx.myappprovider" // You can find this in the Manifest
-    val BASE_PATH = "friends" // Table name
-    val CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH)
 
     var cursorAdapter: FriendsCursorAdapter? = null
 
@@ -76,13 +71,11 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>,
     }
 
     override fun onFriendAdded(friend: Friend) {
-        val helper = DBOpenHelper(this)
         val values = ContentValues()
-        values.put(helper.FRIEND_NAME, friend.name)
-        values.put(helper.FRIEND_PHONE, friend.phone)
+        values.put(FRIEND_NAME, friend.name)
+        values.put(FRIEND_PHONE, friend.phone)
         contentResolver.insert(CONTENT_URI, values)
         restartLoader()
         showToast(friend.name + " added")
     }
-
 }
