@@ -7,12 +7,8 @@
         android:title="Add"
         app:showAsAction="withText" />
     <item
-        android:id="@+id/delete_friend"
-        android:title="Delete"
-        app:showAsAction="withText" />
-    <item
-        android:id="@+id/update_friend"
-        android:title="Update"
+        android:id="@+id/refresh_list"
+        android:title="Refresh"
         app:showAsAction="withText" />
 
 </menu>

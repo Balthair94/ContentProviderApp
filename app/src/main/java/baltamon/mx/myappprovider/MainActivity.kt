@@ -35,8 +35,7 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>,
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
             R.id.add_friend -> showAddFriendDialog()
-            R.id.delete_friend -> showToast("Delete")
-            R.id.update_friend -> showToast("Update")
+            R.id.refresh_list -> restartLoader()
         }
         return super.onOptionsItemSelected(item)
     }
